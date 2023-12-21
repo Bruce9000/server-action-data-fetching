@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Initially generated using create-next-app.
 
-## Getting Started
+Uses Next 14, MUI and React Query - demonstrating how we use React Query to call Server Actions for data fetching.
 
-First, run the development server:
+Showing 2 different contexts that we might use Server Actions to fetch data.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1) (Potentially) Complex Grid with filters, paging, sorting.
+2) Individual fields on a form eg auto-complete fields.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For these we typically have a Client Component that uses a React Query hook, that internally fetches data from a Server
+Action.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+We love this style because its so clean - no excess boilerplate from Route Handlers, really clean end to end Type
+safety.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Code
 
-## Learn More
+__layout.tsx__ has a ClientLayout which sets up react query.
 
-To learn more about Next.js, take a look at the following resources:
+__page.tsx__ then chucks in a dumbed down MUI Grid, our real app has very detailed grids/filters/paging/sorting/etc.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+__app/grid__ contains:
+grid.tsx - our simplified grid showing the gist of our UI data fetching
+grid-dao.ts - data access object our server actions go in here for both data fetching and mutation for a given feature
+grid-queries.ts - react query hooks that our UI uses to fetch and mutate data, internally these call Server Actions
+grid-types.ts - example POJO, really we generate our request/response POJOs from ts-proto looking at our service layer
+proto files.
