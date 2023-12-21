@@ -10,18 +10,12 @@ Showing 2 different contexts that we might use Server Actions to fetch data.
 For these we typically have a Client Component that uses a React Query hook, that internally fetches data from a Server
 Action.
 
+The key flow is:
+
+1) app/grid/grid.tsx fetches data from useSearchItemsQuery a custom React Query hook.
+2) app/grid/grid-queries.ts inside useSearchItemsQuery calls a Server Action for data fetching.
+3) app/grid/grid-dao.ts contains the server action, mocked to return canned data but really would be making a gRPC call
+   out to a microservice.
+
 We love this style because its so clean - no excess boilerplate from Route Handlers, really clean end to end Type
 safety.
-
-# Code
-
-__layout.tsx__ has a ClientLayout which sets up react query.
-
-__page.tsx__ then chucks in a dumbed down MUI Grid, our real app has very detailed grids/filters/paging/sorting/etc.
-
-__app/grid__ contains:
-grid.tsx - our simplified grid showing the gist of our UI data fetching
-grid-dao.ts - data access object our server actions go in here for both data fetching and mutation for a given feature
-grid-queries.ts - react query hooks that our UI uses to fetch and mutate data, internally these call Server Actions
-grid-types.ts - example POJO, really we generate our request/response POJOs from ts-proto looking at our service layer
-proto files.
